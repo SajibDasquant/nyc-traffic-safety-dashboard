@@ -11,7 +11,7 @@ An interactive dashboard analyzing 2.27 million NYC motor vehicle collision reco
 
 ## Live Demo
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](#) <!-- update once deployed -->
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nyc-traffic-safety-dashboard-e9wpkafq8xdlehblttqybz.streamlit.app/)
 
 ---
 
