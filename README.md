@@ -15,6 +15,18 @@ An interactive dashboard analyzing 2.27 million NYC motor vehicle collision reco
 
 ---
 
+## Project Story
+
+**What is it?** An interactive dashboard covering every police-reported NYC vehicle collision from 2012–2026 — crash trends, injuries, fatalities, and hotspots.
+
+**Why this data?** It's official NYC Open Data from MV-104AN police reports, the same foundation behind Vision Zero, NYC's initiative to eliminate traffic deaths.
+
+**How was it built?** The raw file was 2.27M rows / 567MB — too large for a web app. Python and Pandas aggregate it into summary tables, and the app itself is built in Streamlit with Plotly for the charts and map.
+
+**What does it show?** Citywide/borough trends, pedestrian and cyclist fatalities, top contributing factors, crash patterns by hour and day, and a severity-mapped crash view.
+
+---
+
 ## Metrics tracked
 
 | Metric | Description |
