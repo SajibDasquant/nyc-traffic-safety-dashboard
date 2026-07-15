@@ -93,6 +93,11 @@ fig_trend = px.line(
 )
 fig_trend.update_layout(margin=dict(l=0, r=0, t=10, b=0), legend_title="")
 st.plotly_chart(fig_trend, width="stretch")
+peak_month_row = monthly.loc[monthly["crashes"].idxmax()]
+st.caption(
+    f"Crashes peaked in {peak_month_row['MONTH']} with {int(peak_month_row['crashes']):,} reported crashes. "
+    "Injuries and fatalities track closely alongside overall crash volume."
+)
 
 st.divider()
 
@@ -108,6 +113,10 @@ with col_a:
     )
     fig_borough.update_layout(margin=dict(l=0, r=0, t=10, b=0))
     st.plotly_chart(fig_borough, width="stretch")
+    if len(yb):
+        top_borough = yb.groupby("BOROUGH")["crashes"].sum().idxmax()
+        top_borough_val = int(yb.groupby("BOROUGH")["crashes"].sum().max())
+        st.caption(f"{top_borough} recorded the most crashes in the selected range ({top_borough_val:,}).")
 
 with col_b:
     st.subheader("Injury Severity Mix (Sampled Year)")
@@ -118,6 +127,13 @@ with col_b:
     )
     fig_sev.update_layout(margin=dict(l=0, r=0, t=10, b=0))
     st.plotly_chart(fig_sev, width="stretch")
+    sev_total = sev_counts.sum()
+    if sev_total:
+        st.caption(
+            f"{sev_counts['No Injury']/sev_total*100:.1f}% of sampled crashes caused no injury, "
+            f"{sev_counts['Injury']/sev_total*100:.1f}% caused at least one injury, and "
+            f"{sev_counts['Fatal']/sev_total*100:.2f}% were fatal."
+        )
 
 # ── Factors + Vehicles ────────────────────────────────────────────────────────
 st.divider()
@@ -132,6 +148,8 @@ with col_c:
     )
     fig_factors.update_layout(margin=dict(l=0, r=0, t=10, b=0), coloraxis_showscale=False)
     st.plotly_chart(fig_factors, width="stretch")
+    top_factor = factors.iloc[0]
+    st.caption(f"\"{top_factor['factor']}\" was the most frequently cited factor, in {int(top_factor['count']):,} crashes.")
 
 with col_d:
     st.subheader("Top Vehicle Types Involved")
@@ -142,6 +160,8 @@ with col_d:
     )
     fig_vehicles.update_layout(margin=dict(l=0, r=0, t=10, b=0), coloraxis_showscale=False)
     st.plotly_chart(fig_vehicles, width="stretch")
+    top_vehicle = vehicles.iloc[0]
+    st.caption(f"\"{top_vehicle['vehicle_type']}\" was involved in more crashes than any other vehicle type ({int(top_vehicle['count']):,}).")
 
 # ── Time Patterns ─────────────────────────────────────────────────────────────
 st.divider()
@@ -153,6 +173,11 @@ fig_heat = px.imshow(
 )
 fig_heat.update_layout(margin=dict(l=0, r=0, t=10, b=0))
 st.plotly_chart(fig_heat, width="stretch")
+peak_slot = hourly_dow.loc[hourly_dow["crashes"].idxmax()]
+st.caption(
+    f"Darker cells mean more crashes. The single busiest slot is {peak_slot['DAY_OF_WEEK']} at "
+    f"{int(peak_slot['HOUR'])}:00, consistent with rush-hour traffic volume."
+)
 
 # ── Map ───────────────────────────────────────────────────────────────────────
 st.divider()
@@ -165,6 +190,10 @@ fig_map = px.scatter_map(
 )
 fig_map.update_layout(margin=dict(l=0, r=0, t=10, b=0), map_style="open-street-map")
 st.plotly_chart(fig_map, width="stretch")
+st.caption(
+    "Each point is one crash from the sampled year, colored by outcome — "
+    "green (no injury), orange (injury), red (fatal). Zoom in to explore specific streets."
+)
 
 # ── Fatal Crash Table ─────────────────────────────────────────────────────────
 st.divider()
